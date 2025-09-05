@@ -1,0 +1,45 @@
+#pragma once
+#include "EventLoop.h"
+#include "Socket.h"
+#include "Channel.h"
+#include "Acceptor.h"
+#include "Connection.h"
+#include "ThreadPool.h"
+#include <map>
+
+class TcpServer
+{
+private:
+    EventLoop *mainloop_;
+    std::vector<EventLoop *> subloops_;
+    Acceptor *acceptor_;
+    ThreadPool *threadpool_;
+    int threadnum_;
+    std::map<int, spConnection> conns_;
+    std::function<void(spConnection)> newconnectioncb_;
+    std::function<void(spConnection)> closeconnectioncb_;
+    std::function<void(spConnection)> errorconnectioncb_;
+    std::function<void(spConnection, std::string &msg)> onmessagecb_;
+    std::function<void(spConnection)> sendcompletecb_;
+    std::function<void(EventLoop *)> timeoutcb_;
+
+public:
+    TcpServer(const std::string &ip, const uint16_t port, int threadnum = 4);
+    ~TcpServer();
+
+    void start();
+
+    void newconnection(Socket *clientsock);
+    void closeconnection(spConnection conn);
+    void errorconnection(spConnection conn);
+    void onmessage(spConnection conn, std::string &msg);
+    void sendcomplete(spConnection conn);
+    void epolltimeout(EventLoop *loop);
+
+    void setnewconnectioncb(std::function<void(spConnection)> fn);
+    void setcloseconnectioncb(std::function<void(spConnection)> fn);
+    void seterrorconnectioncb(std::function<void(spConnection)> fn);
+    void setonmessagecb(std::function<void(spConnection, std::string &msg)> fn);
+    void setsendcompletecb(std::function<void(spConnection)> fn);
+    void settimeoutcb(std::function<void(EventLoop *)> fn);
+};
