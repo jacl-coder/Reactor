@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     printf("Connected to %s:%s\n", argv[1], argv[2]);
 
     printf("begin time: %ld\n", time(NULL));
-    for (int i = 0; i < 100000; ++i)
+    for (int i = 0; i < 1000000; ++i)
     {
         memset(buf, 0, sizeof(buf));
         sprintf(buf, "Hello %d", i);

@@ -6,7 +6,7 @@ int createNonblocking()
     if (fd < 0)
     {
         // perror("socket()");
-        printf("%s:%s:%s listen socket create error:%d\n", __FILE__, __FUNCTION__, __LINE__, errno);
+        printf("%s:%s:%d listen socket create error:%d\n", __FILE__, __FUNCTION__, __LINE__, errno);
         exit(-1);
     }
     return fd;
@@ -64,7 +64,7 @@ void Socket::bind(const InetAddress &servaddr)
 {
     if (::bind(fd_, servaddr.addr(), sizeof(servaddr)) != 0)
     {
-        printf("%s:%s:%s bind error:%d\n", __FILE__, __FUNCTION__, __LINE__, errno);
+        printf("%s:%s:%d bind error:%d\n", __FILE__, __FUNCTION__, __LINE__, errno);
         exit(-1);
     }
     setipport(servaddr.ip(), servaddr.port());
@@ -80,17 +80,17 @@ void Socket::listen(int n)
 {
     if (::listen(fd_, n) != 0)
     {
-        printf("%s:%s:%s listen error:%d\n", __FILE__, __FUNCTION__, __LINE__, errno);
+        printf("%s:%s:%d listen error:%d\n", __FILE__, __FUNCTION__, __LINE__, errno);
         exit(-1);
     }
 }
 
-int Socket::accept(InetAddress& clientaddr)
+int Socket::accept(InetAddress &clientaddr)
 {
     sockaddr_in peeraddr;
     socklen_t len = sizeof(peeraddr);
-    int clientfd = ::accept4(fd_, (sockaddr*)&peeraddr, &len, SOCK_NONBLOCK);
+    int clientfd = ::accept4(fd_, (sockaddr *)&peeraddr, &len, SOCK_NONBLOCK);
     clientaddr.setaddr(peeraddr);
 
     return clientfd;
-} 
+}

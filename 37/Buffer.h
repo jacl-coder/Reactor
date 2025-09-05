@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <cstring>
+#include <cstdint>
 
 class Buffer
 {
