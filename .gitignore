@@ -1,0 +1,9 @@
+.vscode/
+**/client
+**/client1
+**/tcpepoll
+**/echoserver
+**/bankserver
+*.o
+*.obj
+*.log
